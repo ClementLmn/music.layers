@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -9,7 +10,13 @@ const extractSass = new ExtractTextPlugin({
 });
 
 
-const plugins = [ new HtmlWebpackPlugin({ template: 'src/index.html' }), new ExtractTextPlugin('style.css')];
+const plugins = [ 
+    new HtmlWebpackPlugin({ template: 'src/index.html' }),
+    new ExtractTextPlugin('style.css'),
+    new webpack.ProvidePlugin({
+		THREE: 'three'
+	})
+];
 // plugins.push(new UglifyJsPlugin());
 
 module.exports = {
@@ -34,6 +41,7 @@ module.exports = {
     plugins,
     devServer : {
         host: '0.0.0.0',
-        port: 9000
+        port: 9000,
+        open: true
     }
 };

@@ -1,7 +1,6 @@
 import Tone from 'Tone';
 import WebMidi from 'webmidi';
 import * as THREE from 'three';
-import threeOrbitControls from './utils/OrbitControls';
 import Stats from 'stats.js';
 
 import './scss/core.scss';
@@ -26,26 +25,41 @@ const line2Mat = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide
 });
 
+const line3Mat = new THREE.MeshPhongMaterial({
+    color: 0xd456e0,
+    flatShading : true,
+    side: THREE.DoubleSide
+});
+
 
 
 const line = new THREE.Mesh( new THREE.BoxGeometry( 80, 8, 8 , 60), lineMat );
 line.castShadow = true;
 line.receiveShadow = true;
-line.geometry.verticesNeedUpdate = true;
+line.rotation.z = 0.2;
+line.position.y = 5;
 sceneInit.scene.add( line );
 
 const line2 = new THREE.Mesh( new THREE.BoxGeometry( 80, 8, 8 , 60), line2Mat );
 line2.castShadow = true;
 line2.receiveShadow = true;
-line2.geometry.verticesNeedUpdate = true;
 line2.position.z -= 10;
+line2.position.y = 5;
+line2.rotation.z = 0.2;
 sceneInit.scene.add( line2 );
 
-console.log(line.geometry.vertices);
+const line3 = new THREE.Mesh( new THREE.BoxGeometry( 80, 8, 8 , 60), line3Mat );
+line3.castShadow = true;
+line3.receiveShadow = true;
+line3.position.z -= 20;
+line3.position.y = 5;
+line3.rotation.z = 0.2;
+sceneInit.scene.add( line3 );
+
+console.log(line3);
 
 
-
-animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats, line, line2);
+animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats, line, line2, line3);
 initMidi();
 
 
