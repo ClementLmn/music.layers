@@ -6,7 +6,7 @@ const tremolo = new Tone.Tremolo(0,0.75).toMaster();
 const ppDelay = new Tone.PingPongDelay(0,0.75).toMaster();
 const reverb = new Tone.Freeverb(0, 3000).toMaster();
 let tremoloActive;
-const synth = new Tone.PolySynth().connect(tremolo).connect(ppDelay).connect(reverb);
+export const synth = new Tone.PolySynth(3).connect(tremolo).connect(ppDelay).connect(reverb);
 let midi, data, midiEnable;
 
 
@@ -54,7 +54,7 @@ const bindInput = inputDevice => {
             }
         })
         inputDevice.addListener('noteon', 'all', (event) => {
-            console.log(event.note.name);
+            console.log(synth);
             const fullNote = event.note.name + event.note.octave;
             synth.triggerAttack(fullNote);
         })
