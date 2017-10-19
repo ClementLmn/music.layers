@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-import threeOrbitControls from '../utils/OrbitControls';
-
-const OrbitControls = threeOrbitControls(THREE);
+import 'three/examples/js/controls/OrbitControls';
 
 export let renderer; 
 export let scene;
@@ -24,7 +22,7 @@ export const init = () => {
     camera.position.set(-800, 800, 800);
     camera.lookAt(scene.position)
 
-    const controls = new OrbitControls (camera, renderer.domElement);
+    const controls = new THREE.OrbitControls (camera, renderer.domElement);
 
     // LES LIGHTS
     const ambientLight = new THREE.AmbientLight(0xffffff, 1); // soft white light
