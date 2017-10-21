@@ -1,19 +1,32 @@
 import {synth} from './midiSound';
+import Tone from 'Tone';
 import Line from '../viz/Line';
 
 const voices = [];
 
+export const notePlay = (freq) => {
+
+    console.log(new Tone.Frequency(freq).toSeconds() * 10);
+    const frequency = new Tone.Frequency(freq).toSeconds() * 10;
+    const thisLine = new Line(0xe07a57, 2, frequency, 4);
+    //voices.push(thisLine);
+}
+
+export const noteStop = () => {
+    
+}
 
 export const getVoices = (scene) =>{
 
     const synthVoices = synth.voices;
 
-    let prevVoice;
-
+    // let prevVoice;
     // synthVoices.forEach((v, i) => {
     //     const z = i * 10;
     //     if(v.frequency.value !== prevVoice){
-    //         voices.push(new Line(0xe07a57, 2, 0.05, 4, z));
+    //         const newLine = new Line(0xe07a57, 2, 0.05, 4, z)
+    //         voices.push(newLine);
+    //         scene.add(newLine.mesh);
     //     }
     //     prevVoice = v.frequency.value;
 

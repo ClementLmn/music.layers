@@ -1,5 +1,6 @@
 import Tone from 'Tone';
 import WebMidi from 'webmidi';
+import {notePlay, noteStop}from './voices';
 
 
 const tremolo = new Tone.Tremolo(0,0.75).toMaster();
@@ -54,9 +55,10 @@ const bindInput = inputDevice => {
             }
         })
         inputDevice.addListener('noteon', 'all', (event) => {
-            console.log(synth);
             const fullNote = event.note.name + event.note.octave;
             synth.triggerAttack(fullNote);
+            notePlay(new Tone.Frequency().midiToFrequency(event.note.number));
+
         })
         inputDevice.addListener('noteoff', 'all',  (event) => {
             synth.triggerRelease(event.note.name + event.note.octave);
