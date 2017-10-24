@@ -4,6 +4,8 @@ import 'three/examples/js/controls/OrbitControls';
 export let renderer; 
 export let scene;
 export let camera;
+const D = 200;
+let aspectRatio = window.innerWidth / window.innerHeight;
 
 export const init = () => {
     renderer = new THREE.WebGLRenderer({antialias: true});
@@ -14,10 +16,10 @@ export const init = () => {
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x1A1A1A );
 
-    let aspectRatio = window.innerWidth / window.innerHeight;
+    
     const nearPlane = 1;
     const farPlane = 10000;
-    const D = 200;
+    
     camera = new THREE.OrthographicCamera(-D*aspectRatio, D*aspectRatio, D, -D, nearPlane, farPlane)
     camera.position.set(-800, 800, 800);
     camera.lookAt(scene.position)
@@ -63,7 +65,7 @@ export const init = () => {
 export const resizeHandler = () => {
     aspectRatio = window.innerWidth / window.innerHeight;
     camera.left = -D*aspectRatio;
-    camera.right = D*aspectRatio
+    camera.right = D*aspectRatio;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 };

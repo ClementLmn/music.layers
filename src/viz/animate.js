@@ -1,10 +1,13 @@
 import fieldSorter from '../utils/fieldSorter.js';
-import * as CCapture from '../utils/Ccapture';
+import * as CCapture from 'ccapture.js';
 import {getVoices} from '../sound/voices';
 
-export default (scene, camera, renderer, stats) => {
+export default (scene, camera, renderer, stats, isRecorded = false) => {
+    if(isRecorded){
+        const capturer = new CCapture( { format: 'png', verbose: true, startTime: 1, timeLimit: 6 } );
+        capturer.start();
+    }
     const voices = getVoices(scene);
-    const capturer = new CCapture( { format: 'png', verbose: true } );
     let count = 0;
     const animate = timestamp => {
         stats.begin();
@@ -28,10 +31,8 @@ export default (scene, camera, renderer, stats) => {
             v.mesh.geometry.vertices.sort(fieldSorter(['x', 'y']));
             moveLine(v);
         }, this);
-        capturer.capture( renderer.domElement );
-        if(count === 300){
-            capturer.stop();
-            capturer.save();
+        if(isRecorded){
+            capturer.capture( renderer.domElement );
         }
         stats.end();
         requestAnimationFrame(animate);

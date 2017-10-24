@@ -30,6 +30,7 @@
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
+    "ccapture.js": "^1.0.7",
     "gsap": "^1.20.3",
     "stats.js": "^0.17.0",
     "three": "^0.87.1",
