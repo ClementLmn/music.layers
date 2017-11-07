@@ -1,11 +1,11 @@
 import Tone from 'Tone';
 import WebMidi from 'webmidi';
-import {notePlay, noteStop}from './voices';
+import {notePlay, noteStop} from './voices';
 
 
 const tremolo = new Tone.Tremolo(0,0.75).toMaster();
 const ppDelay = new Tone.PingPongDelay(0,0.75).toMaster();
-const reverb = new Tone.Freeverb(0, 3000).toMaster();
+const reverb = new Tone.Freeverb(0.85, 3000).toMaster();
 let tremoloActive;
 export const synth = new Tone.PolySynth(3).connect(tremolo).connect(ppDelay).connect(reverb);
 let midi, data, midiEnable;
@@ -18,11 +18,6 @@ export const initMidi = () => {
             if (WebMidi.inputs){
                 WebMidi.inputs.forEach((input) => bindInput(input))
             }
-            WebMidi.addListener('connected', (device) => {
-                if (device.input){
-                    bindInput(device.input)
-                }
-            })
         }
     });    
 }
@@ -51,17 +46,19 @@ const bindInput = inputDevice => {
                 ppDelay.delayTime.value = event.data[2] / 127;
             }
             if (event.data[1] === 52){
-                reverb.roomSize.value = event.data[2] / 127;
+                reverb.wet.value = event.data[2] / 127;
             }
         })
         inputDevice.addListener('noteon', 'all', (event) => {
             const fullNote = event.note.name + event.note.octave;
             synth.triggerAttack(fullNote);
-            notePlay(new Tone.Frequency().midiToFrequency(event.note.number));
+            console.log('tuche');
+            notePlay(event.note.number);
 
         })
         inputDevice.addListener('noteoff', 'all',  (event) => {
             synth.triggerRelease(event.note.name + event.note.octave);
+            noteStop(event.note.number);
         })
     }
 }

@@ -13,6 +13,7 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
         stats.begin();
         renderer.render(scene, camera);
         count++;
+        //console.log(voices);
         const moveLine = (v) => {
             const geo = v.mesh.geometry;
             for (let i = 0; i < geo.vertices.length; i++){

@@ -1,19 +1,21 @@
 import {synth} from './midiSound';
 import Tone from 'Tone';
 import Line from '../viz/Line';
+import {scene} from '../viz/sceneInit';
 
 const voices = [];
 
-export const notePlay = (freq) => {
-
-    console.log(new Tone.Frequency(freq).toSeconds() * 10);
-    const frequency = new Tone.Frequency(freq).toSeconds() * 10;
-    const thisLine = new Line(0xe07a57, 2, frequency, 4);
-    //voices.push(thisLine);
+export const notePlay = (note) => {
+    const frequency = Tone.Frequency().midiToFrequency(note);
+    const thisLine = new Line(0xe07a57, 2, (frequency).toFixed(2), 4);
+    voices[note] = thisLine;
+    console.log(voices[note].freq);
+    scene.add(thisLine.mesh);
 }
 
-export const noteStop = () => {
-    
+export const noteStop = note => {
+    scene.remove(voices[note].mesh);
+    voices.splice(note, 1);
 }
 
 export const getVoices = (scene) =>{
@@ -32,11 +34,11 @@ export const getVoices = (scene) =>{
 
     // });
 
-    const v1 = new Line(0xe07a57, 2, 0.05, 4);
-    const v2 = new Line(0x4fe2b3, 2, 0.06, 4, 10);
-    const v3 = new Line(0xd456e0, 4.4, 0.03, 4, 20);
+    // const v1 = new Line(0xe07a57, 2, 0.05, 4);
+    // const v2 = new Line(0x4fe2b3, 2, 0.06, 4, 10);
+    // const v3 = new Line(0xd456e0, 4.4, 0.03, 4, 20);
 
-    voices.push(v1, v2, v3);
+    // voices.push(v1, v2, v3);
     voices.forEach((e) => {
         scene.add(e.mesh);
     }, this);
