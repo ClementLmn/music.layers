@@ -35,7 +35,8 @@ module.exports = {
                 //resolve-url-loader may be chained before sass-loader if necessary
                 use: ['css-loader', 'sass-loader']
               })
-            }
+            },
+            { test: /\.glsl$/, use: ['webpack-glsl-loader'] },
           ]
     },
     plugins,

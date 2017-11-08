@@ -12,25 +12,23 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
     const animate = timestamp => {
         stats.begin();
         renderer.render(scene, camera);
-        count++;
         //console.log(voices);
-        const moveLine = (v) => {
-            const geo = v.mesh.geometry;
-            for (let i = 0; i < geo.vertices.length; i++){
-                if (i%4 === 0){
-                    const vtx = geo.vertices;
-                    vtx[i].y = v.ampl * Math.sin( v.freq * (i + count * v.speed)) - 8;
-                    vtx[i+1].y = v.ampl * Math.sin( v.freq * (i + count * v.speed)) - 8;
-                    vtx[i+2].y = v.ampl * Math.sin( v.freq * (i + count * v.speed));
-                    vtx[i+3].y = v.ampl * Math.sin( v.freq * (i + count * v.speed));
-                }
-            }
-            geo.verticesNeedUpdate = true;
-        }
+        // const moveLine = (v) => {
+        //     const geo = v.mesh.geometry;
+        //     for (let i = 0; i < geo.vertices.length; i++){
+        //         if (i%4 === 0){
+        //             const vtx = geo.vertices;
+        //             vtx[i].y = v.ampl * Math.sin( v.freq * (i + count * v.speed)) - 8;
+        //             vtx[i+1].y = v.ampl * Math.sin( v.freq * (i + count * v.speed)) - 8;
+        //             vtx[i+2].y = v.ampl * Math.sin( v.freq * (i + count * v.speed));
+        //             vtx[i+3].y = v.ampl * Math.sin( v.freq * (i + count * v.speed));
+        //         }
+        //     }
+        //     geo.verticesNeedUpdate = true;
+        // }
 
         voices.forEach((v) => {
-            v.mesh.geometry.vertices.sort(fieldSorter(['x', 'y']));
-            moveLine(v);
+            v.material.uniforms.count.value = ++count;
         }, this);
         if(isRecorded){
             capturer.capture( renderer.domElement );

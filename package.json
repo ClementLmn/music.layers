@@ -27,7 +27,8 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.7.1",
-    "webpack-dev-server": "^2.9.1"
+    "webpack-dev-server": "^2.9.1",
+    "webpack-glsl-loader": "^1.0.1"
   },
   "dependencies": {
     "ccapture.js": "^1.0.7",
