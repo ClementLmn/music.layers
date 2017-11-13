@@ -45,6 +45,7 @@ export const init = () => {
     bulb.shadow.camera.far = 1000;
     bulb.shadow.mapSize.width = bulb.shadow.mapSize.height = 2048;
     scene.add( bulb );
+    console.log(bulb.position);
 
     // LE SOOOOL
     const matFloor = new THREE.MeshPhongMaterial({

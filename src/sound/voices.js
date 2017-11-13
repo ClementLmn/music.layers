@@ -7,7 +7,7 @@ const voices = [];
 
 export const notePlay = (note) => {
     const frequency = Tone.Frequency().midiToFrequency(note);
-    const thisLine = new Line(0xe07a57, 2, (frequency).toFixed(2), 4, Object.keys(voices).length*10);
+    const thisLine = new Line(2, (frequency).toFixed(2), 4, Object.keys(voices).length);
     voices.push(thisLine)
     console.log(thisLine);
     scene.add(thisLine.mesh);
@@ -45,9 +45,6 @@ export const getVoices = (scene) =>{
     // const v3 = new Line(0xd456e0, 4.4, 0.03, 4, 20);
 
     // voices.push(v1, v2, v3);
-    voices.forEach((e) => {
-        scene.add(e.mesh);
-    }, this);
 
     return voices;
 }
