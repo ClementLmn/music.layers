@@ -12,10 +12,9 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
     const animate = timestamp => {
         stats.begin();
         renderer.render(scene, camera);
-
-        voices.forEach((v) => {
-            v.material.uniforms.count.value = ++count;
-        }, this);
+        for (var prop in voices) {
+            voices[prop].material.uniforms.count.value++;
+        }
         if(isRecorded){
             capturer.capture( renderer.domElement );
         }

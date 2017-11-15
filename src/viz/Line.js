@@ -5,11 +5,12 @@ import fragment from './shaders/fragment.glsl';
 
 
 class Line{
-    constructor(ampl, freq, speed, z = 0){
+    constructor(voices, ampl, freq, speed, z = 0){
         this.ampl = ampl;
         this.freq = freq;
         this.speed = speed;
-        switch(z){
+        this.place = z;
+        switch(z%3){
             case 0:
                 this.color = new THREE.Color(0xe07a57);
                 break;

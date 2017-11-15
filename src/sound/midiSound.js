@@ -52,7 +52,6 @@ const bindInput = inputDevice => {
         inputDevice.addListener('noteon', 'all', (event) => {
             const fullNote = event.note.name + event.note.octave;
             synth.triggerAttack(fullNote);
-            console.log('tuche');
             notePlay(event.note.number);
 
         })
