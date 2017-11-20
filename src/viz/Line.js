@@ -2,14 +2,16 @@ import {scene} from './sceneInit';
 // shaders
 import vertex from './shaders/vertex.glsl';
 import fragment from './shaders/fragment.glsl';
-
+import {TweenMax} from 'gsap';
 
 class Line{
-    constructor(voices, ampl, freq, speed, z = 0){
+    constructor(note, voices, ampl, freq, speed, z = 0){
         this.ampl = ampl;
+        this.note = note;
         this.freq = freq;
         this.speed = speed;
         this.place = z;
+        this.dead = false;
         switch(z%3){
             case 0:
                 this.color = new THREE.Color(0xe07a57);

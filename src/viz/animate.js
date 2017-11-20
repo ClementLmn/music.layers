@@ -1,6 +1,6 @@
 import fieldSorter from '../utils/fieldSorter.js';
 import * as CCapture from 'ccapture.js';
-import {getVoices} from '../sound/voices';
+import {getVoices, deleteVoice} from '../sound/voices';
 
 export default (scene, camera, renderer, stats, isRecorded = false) => {
     if(isRecorded){
