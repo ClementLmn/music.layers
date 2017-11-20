@@ -1,5 +1,6 @@
 uniform float count; // same for all vertex on the same render loop
 uniform float freq; // same for all vertex on the same render loop
+uniform float scalefactor;
 //float freq = 440.0; //0.05 to 0.8
 float speed = 1.5;
 float ampl = 3.0;
