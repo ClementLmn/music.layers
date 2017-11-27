@@ -13,6 +13,7 @@ let midi, data, midiEnable;
 
 export const initMidi = () => {
     WebMidi.enable((err) => {
+        console.log(err);
         if (!err){
             midiEnable = true
             if (WebMidi.inputs){
@@ -51,13 +52,18 @@ const bindInput = inputDevice => {
         })
         inputDevice.addListener('noteon', 'all', (event) => {
             const fullNote = event.note.name + event.note.octave;
+            const note = event.note.number;
             synth.triggerAttack(fullNote);
-            notePlay(event.note.number);
+            const frequency = Tone.Frequency().midiToFrequency(note);
+            notePlay(note, frequency);
 
         })
         inputDevice.addListener('noteoff', 'all',  (event) => {
-            synth.triggerRelease(event.note.name + event.note.octave);
-            noteStop(event.note.number);
+            const fullNote = event.note.name + event.note.octave;
+            const note = event.note.number;
+            synth.triggerRelease(fullNote);
+            const frequency = Tone.Frequency().midiToFrequency(note);
+            noteStop(note, frequency);
         })
     }
 }

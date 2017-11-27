@@ -6,6 +6,7 @@ import Stats from 'stats.js';
 import './scss/core.scss';
 
 import {initMidi, synth} from './sound/midiSound';
+import {initKeyboard} from './sound/keyboard';
 import * as sceneInit from './viz/sceneInit';
 import animate from './viz/animate';
 
@@ -15,6 +16,7 @@ sceneInit.init();
 
 animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats);
 initMidi();
+initKeyboard();
 // console.log(synth);
 
 
