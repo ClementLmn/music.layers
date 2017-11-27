@@ -12,7 +12,6 @@ class Line{
         this.speed = speed;
         this.place = z;
         this.dead = false;
-        this.pivot = new THREE.Object3D();
         switch(z%3){
             case 0:
                 this.color = new THREE.Color(0xe07a57);
@@ -34,7 +33,6 @@ class Line{
                 diffuse: { type: 'c', value: this.color },
                 lightPosition: {type: 'v3', value: new THREE.Vector3(-150, 150, 0)},
                 count: { value: 0.0 },
-                scalefactor: { value: 0.0},
                 freq: { type: 'f', value: this.freq },
             }
         ]);
@@ -52,12 +50,6 @@ class Line{
         this.mesh.rotation.z = 0.2;
         this.mesh.position.y = 5;
         this.mesh.position.z -= z*10;
-
-
-        this.mesh.position.x = 80;
-        
-        this.pivot.position.x= -60;
-        this.pivot.add( this.mesh );
     }
 }
 

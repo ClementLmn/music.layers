@@ -16,8 +16,7 @@ export const notePlay = (note, frequency) => {
     }
     voices[note] = thisLine;
     lastLine = thisLine;
-    scene.add(thisLine.pivot);
-    console.log(thisLine);
+    scene.add(thisLine.mesh);
 }
 
 export const noteStop = (note, frequency) => {
@@ -26,11 +25,17 @@ export const noteStop = (note, frequency) => {
     delete voices[note];
 
 
-    TweenMax.to(noteToKill.pivot.scale, 0.3, {x :0.001, onComplete: function(){
-        scene.remove(noteToKill.pivot);
+    TweenMax.to(noteToKill.mesh.scale, 0.3, {x :0.001, onComplete: function(){
+        scene.remove(noteToKill.mesh);
         noteToKill = null;
         // on dégage celle quon a gardé
     }});
+}
+
+export const deleteVoice = note => {
+    const freq = Tone.Frequency().midiToFrequency(note);
+    scene.remove(voices[note].mesh);
+    delete voices[note];
 }
 
 export const getVoices = (scene) => {
