@@ -7,8 +7,7 @@ import { TweenMax } from 'gsap';
 const voices = {};
 let lastLine;
 
-export const notePlay = (note) => {
-    const frequency = Tone.Frequency().midiToFrequency(note);
+export const notePlay = (note, frequency) => {
     let thisLine;
     if(Object.keys(voices).length > 0){
         thisLine = new Line(note, voices, 2, (frequency).toFixed(2), 4, lastLine.place + 1);
@@ -21,10 +20,8 @@ export const notePlay = (note) => {
     console.log(thisLine);
 }
 
-export const noteStop = note => {
+export const noteStop = (note, frequency) => {
     // on enleve la note du tableau mais on la garde
-    
-    const freq = Tone.Frequency().midiToFrequency(note);
     let noteToKill = voices[note];
     delete voices[note];
 
