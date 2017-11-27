@@ -31,7 +31,6 @@
     "webpack-glsl-loader": "^1.0.1"
   },
   "dependencies": {
-    "audiokeys": "^0.1.1",
     "ccapture.js": "^1.0.7",
     "gsap": "^1.20.3",
     "stats.js": "^0.17.0",

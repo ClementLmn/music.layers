@@ -51,51 +51,46 @@ const bindInput = inputDevice => {
         })
         inputDevice.addListener('noteon', 'all', (event) => {
             const fullNote = event.note.name + event.note.octave;
-            const freq = Tone.Frequency().midiToFrequency(fullNote);
-            const midiCode = 2;
-            console.log(event)
-            synth.triggerAttack(freq);
+            synth.triggerAttack(fullNote);
             notePlay(event.note.number);
 
         })
         inputDevice.addListener('noteoff', 'all',  (event) => {
-            const fullNote = event.note.name + event.note.octave;
-            const freq = Tone.Frequency().midiToFrequency(fullNote);
-            synth.triggerRelease(freq);
+            synth.triggerRelease(event.note.name + event.note.octave);
             noteStop(event.note.number);
         })
     }
 }
 
 
-if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({
-        sysex: false // this defaults to 'false' and we won't be covering sysex in this article. 
-    }).then(onMIDISuccess, onMIDIFailure);
-    console.log('Midi OK');
-} else {
-    console.log('Pas de Midi');
-}
+// if (navigator.requestMIDIAccess) {
+//     navigator.requestMIDIAccess({
+//         sysex: false // this defaults to 'false' and we won't be covering sysex in this article. 
+//     }).then(onMIDISuccess, onMIDIFailure);
+//     console.log('Midi OK');
+// } else {
+//     console.log('Pas de Midi');
+// }
 
-// midi functions
-function onMIDISuccess(midiAccess) {
-    // when we get a succesful response, run this code
-    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
+// // midi functions
+// function onMIDISuccess(midiAccess) {
+//     // when we get a succesful response, run this code
+//     midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
 
-    var inputs = midi.inputs.values();
-    // loop over all available inputs and listen for any MIDI input
-    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-        // each time there is a midi message call the onMIDIMessage function
-        input.value.onmidimessage = onMIDIMessage;
-    }
-}
+//     var inputs = midi.inputs.values();
+//     // loop over all available inputs and listen for any MIDI input
+//     for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+//         // each time there is a midi message call the onMIDIMessage function
+//         input.value.onmidimessage = onMIDIMessage;
+//     }
+// }
 
-function onMIDIFailure(error) {
-    // when we get a failed response, run this code
-    console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
-}
+// function onMIDIFailure(error) {
+//     // when we get a failed response, run this code
+//     console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
+// }
 
-function onMIDIMessage(message) {
-    data = message; // this gives us our [command/channel, note, velocity] data.
-    console.log('MIDI data', data); // MIDI data [144, 63, 73]
-}
+// function onMIDIMessage(message) {
+//     data = message; // this gives us our [command/channel, note, velocity] data.
+//     console.log('MIDI data', data); // MIDI data [144, 63, 73]
+// }
