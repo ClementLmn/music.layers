@@ -1,4 +1,3 @@
-import {synth} from './midiSound';
 import Tone from 'Tone';
 import Line from '../viz/Line';
 import {scene} from '../viz/sceneInit';

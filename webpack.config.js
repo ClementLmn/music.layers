@@ -37,6 +37,15 @@ module.exports = {
               })
             },
             { test: /\.glsl$/, use: ['webpack-glsl-loader'] },
+            {
+                test: /\.(aif|aiff|mp3)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {}  
+                    }
+                ]
+            }
           ]
     },
     plugins,

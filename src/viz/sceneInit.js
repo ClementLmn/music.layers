@@ -9,6 +9,7 @@ let aspectRatio = window.innerWidth / window.innerHeight;
 
 export const init = () => {
     renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.localClippingEnabled = true;
     renderer.shadowMap.enabled = true;
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );

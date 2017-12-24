@@ -1,0 +1,24 @@
+::-moz-selection{
+    background: black;
+    color: white;
+    text-shadow: none;
+}
+::selection{
+    background: black;
+    color: white;
+    text-shadow: none;
+}
+
+html{
+    font-size: 62.5%; /* sets the base font to 10px for easier math */
+}
+
+body{
+    font-family: sans-serif;
+    font-size: 1.6em;
+    line-height: 1.2;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: white;
+    position: relative;
+}

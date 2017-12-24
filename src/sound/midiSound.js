@@ -3,70 +3,73 @@ import WebMidi from 'webmidi';
 import {notePlay, noteStop} from './voices';
 
 
-const tremolo = new Tone.Tremolo(0,0.75).toMaster();
-const ppDelay = new Tone.PingPongDelay(0,0.75).toMaster();
-const reverb = new Tone.Freeverb(0.85, 3000).toMaster();
 let tremoloActive;
-export const synth = new Tone.PolySynth(3).connect(tremolo).connect(ppDelay).connect(reverb);
 let midi, data, midiEnable;
 
 
-export const initMidi = () => {
+export const initMidi = (synth) => {
     WebMidi.enable((err) => {
-        console.log(err);
         if (!err){
             midiEnable = true
             if (WebMidi.inputs){
                 WebMidi.inputs.forEach((input) => bindInput(input))
             }
+        }else{
+            console.log(err);
         }
     });    
-}
 
-const bindInput = inputDevice => {
-    if (midiEnable){
-        WebMidi.addListener('disconnected', (device) => {
-            if (device.input){
-                device.input.removeListener('noteOn')
-                device.input.removeListener('noteOff')
-            }
-        })
-        inputDevice.addListener('controlchange', 'all', (event) => {
-            if (event.data[1] === 48){
-                if (tremolo.frequency.value == 0){
-                    tremoloActive = false;
-                    tremolo.stop();
-                } 
-                else if(!tremoloActive){
-                    tremoloActive = true;
-                    tremolo.start();
+    const bindInput = inputDevice => {
+        if (midiEnable){
+            WebMidi.addListener('disconnected', (device) => {
+                if (device.input){
+                    device.input.removeListener('noteOn')
+                    device.input.removeListener('noteOff')
                 }
-                tremolo.frequency.value = event.data[2] * 25 / 127;
-            }
-            if (event.data[1] === 49){
-                ppDelay.delayTime.value = event.data[2] / 127;
-            }
-            if (event.data[1] === 52){
-                reverb.wet.value = event.data[2] / 127;
-            }
-        })
-        inputDevice.addListener('noteon', 'all', (event) => {
-            const fullNote = event.note.name + event.note.octave;
-            const note = event.note.number;
-            synth.triggerAttack(fullNote);
-            const frequency = Tone.Frequency().midiToFrequency(note);
-            notePlay(note, frequency);
-
-        })
-        inputDevice.addListener('noteoff', 'all',  (event) => {
-            const fullNote = event.note.name + event.note.octave;
-            const note = event.note.number;
-            synth.triggerRelease(fullNote);
-            const frequency = Tone.Frequency().midiToFrequency(note);
-            noteStop(note, frequency);
-        })
+            })
+            // inputDevice.addListener('controlchange', 'all', (event) => {
+            //     if (event.data[1] === 48){
+            //         if (tremolo.frequency.value == 0){
+            //             tremoloActive = false;
+            //             tremolo.stop();
+            //         } 
+            //         else if(!tremoloActive){
+            //             tremoloActive = true;
+            //             tremolo.start();
+            //         }
+            //         tremolo.frequency.value = event.data[2] * 25 / 127;
+            //     }
+            //     if (event.data[1] === 49){
+            //         ppDelay.delayTime.value = event.data[2] / 127;
+            //     }
+            //     if (event.data[1] === 52){
+            //         reverb.wet.value = event.data[2] / 127;
+            //     }
+            // })
+            inputDevice.addListener('noteon', 'all', (event) => {
+                const fullNote = event.note.name + event.note.octave;
+                const note = event.note.number;
+                synth.triggerAttack(fullNote);
+                const frequency = Tone.Frequency().midiToFrequency(note);
+                notePlay(note, frequency);
+    
+            })
+            inputDevice.addListener('noteoff', 'all',  (event) => {
+                const fullNote = event.note.name + event.note.octave;
+                const note = event.note.number;
+                synth.triggerRelease(fullNote);
+                const frequency = Tone.Frequency().midiToFrequency(note);
+                noteStop(note, frequency);
+            })
+        }
     }
+
+
+
+
 }
+
+
 
 
 // if (navigator.requestMIDIAccess) {
