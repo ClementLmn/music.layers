@@ -27,25 +27,6 @@ export const initMidi = (synth) => {
                     device.input.removeListener('noteOff')
                 }
             })
-            // inputDevice.addListener('controlchange', 'all', (event) => {
-            //     if (event.data[1] === 48){
-            //         if (tremolo.frequency.value == 0){
-            //             tremoloActive = false;
-            //             tremolo.stop();
-            //         } 
-            //         else if(!tremoloActive){
-            //             tremoloActive = true;
-            //             tremolo.start();
-            //         }
-            //         tremolo.frequency.value = event.data[2] * 25 / 127;
-            //     }
-            //     if (event.data[1] === 49){
-            //         ppDelay.delayTime.value = event.data[2] / 127;
-            //     }
-            //     if (event.data[1] === 52){
-            //         reverb.wet.value = event.data[2] / 127;
-            //     }
-            // })
             inputDevice.addListener('noteon', 'all', (event) => {
                 const fullNote = event.note.name + event.note.octave;
                 const note = event.note.number;

@@ -1,0 +1,16 @@
+.loop-control{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    button {
+        font-weight: 700;
+        border: 0;
+        padding: 10px 15px;
+        color: white;
+        outline: none;
+        background-color: darkgrey;
+        &.active{
+            background-color: red;
+        }
+    }
+}

@@ -8,6 +8,7 @@ import './scss/core.scss';
 import {initMidi} from './sound/midiSound';
 import {initKeyboard} from './sound/keyboard';
 import * as sceneInit from './viz/sceneInit';
+import {initRec} from './sound/loop';
 import animate from './viz/animate';
 
 // Drums
@@ -24,6 +25,7 @@ import maracas from './sound/sample/maracas.mp3';
 import rim from './sound/sample/rim.mp3';
 import snare from './sound/sample/snare.mp3';
 import tom from './sound/sample/tom.mp3';
+import { init } from './viz/sceneInit';
 
 const stats = new Stats();
 document.body.appendChild(stats.domElement);
@@ -45,16 +47,22 @@ const sampler = new Tone.Sampler({
     "C5" : tom,
 }).toMaster();
 
-console.log(Tone.Buffer.supportsType('mp3'))
-console.log(Tone.Buffer.supportsType('aif'))
-console.log(Tone.Buffer.supportsType('aiff'))
-
 
 sceneInit.init();
+
+Tone.Transport.bpm.value = 120;
+Tone.Transport.loop = true;
+Tone.Transport.loopStart = "0:0:0";
+Tone.Transport.loopEnd = "8:0:0";
+Tone.Transport.start();
+Tone.Transport.scheduleRepeat(function(time){
+    console.log(Tone.Transport.position);
+}, "16n", "0");
 
 animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats);
 initMidi(synth);
 initKeyboard(synth, sampler);
+initRec();
 
 
 addEventListener('resize', () => {
