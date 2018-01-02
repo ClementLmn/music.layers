@@ -1,13 +1,15 @@
 import fieldSorter from '../utils/fieldSorter.js';
 import * as CCapture from 'ccapture.js';
-import {getVoices, deleteVoice} from '../sound/voices';
+import {getVoices} from '../sound/voices';
+import {getLoops} from '../sound/loop';
 
 export default (scene, camera, renderer, stats, isRecorded = false) => {
     if(isRecorded){
         const capturer = new CCapture( { format: 'png', verbose: true, startTime: 1, timeLimit: 6 } );
         capturer.start();
     }
-    const voices = getVoices(scene);
+    const voices = getVoices();
+    const loops = getLoops();
     let count = 0;
     const animate = timestamp => {
         stats.begin();

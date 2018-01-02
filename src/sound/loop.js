@@ -1,8 +1,10 @@
 import Tone from 'Tone';
 import metroSample from './sample/metronome.mp3';
 import metroSampleUp from './sample/metronomeUp.mp3';
+import {notePlay, noteStop} from './voices';
+import * as key from './keyboard';
 
-export const initRec = () => {
+export const initRec = synth => {
     let currentLoopNb = 0;
     let isRec = false;
     const recButton = document.querySelector('#rec');
@@ -22,6 +24,23 @@ export const initRec = () => {
 
     metronome.mute = true;
 
+    const processData = data => {
+        data.notes.forEach(el => {
+            if(el.timeEnd == undefined) el.timeEnd = "8m";
+            el.deltaTime = el.timeEnd - el.time;
+        });
+        console.log(data)
+        const part = new Tone.Part(function(time, value){
+            data.sound.triggerAttackRelease(value.note, value.deltaTime, time);
+            if(data.sound == synth){
+                notePlay(Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
+                setTimeout(() => {
+                    noteStop(Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
+                }, Tone.Time(value.deltaTime).toMilliseconds());
+            }
+        }, data.notes).start(0);
+    }
+
     const loopRec = () => {
         isRec = true;
         recButton.classList.add('active');
@@ -29,27 +48,27 @@ export const initRec = () => {
         whichMetro = 1;
         Tone.Transport.position = "0:0:0";
         metronome.mute = false;
+
+
+        key.rec();
         
         Tone.Transport.on("loop", function(time){
-            if(isRec){
-                console.log('STOOOOP')
-                loopStopRec();
-            }
+            if(isRec) loopStopRec();
         });
-
-        // var part = new Tone.Part(function(time, value){
-        //     //the value is an object which contains both the note and the velocity
-        //     synth.triggerAttackRelease(value.note, "8n", time, value.velocity);
-        // }, [{"time" : 0, "note" : "C3", "velocity": 0.9}, 
-        //        {"time" : "0:2", "note" : "C4", "velocity": 0.5}
-        // ]).start(0);
     }
 
+
+
     const loopStopRec = (note, frequency) => {
+        key.stopRec()
+
+        processData(key.dataRecorded());
+
         isRec = false;
         recButton.classList.remove('active');
         Tone.Transport.position = "0:0:0";
         metronome.mute = true;
+
     }
 
 
@@ -63,12 +82,7 @@ export const initRec = () => {
 
 
 }
-export const loopPlay = (note, frequency) => {
-    var part = new Tone.Part(function(time, value){
-        //the value is an object which contains both the note and the velocity
-        synth.triggerAttackRelease(value.note, "8n", time, value.velocity);
-    }, [
-        {"time" : 0, "note" : "C3", "velocity": 0.9}, 
-        {"time" : "0:2", "note" : "C4", "velocity": 0.5}
-    ]).start(0);
+
+export const getLoops = () => {
+
 }

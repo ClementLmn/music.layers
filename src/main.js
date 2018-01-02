@@ -25,26 +25,45 @@ import maracas from './sound/sample/maracas.mp3';
 import rim from './sound/sample/rim.mp3';
 import snare from './sound/sample/snare.mp3';
 import tom from './sound/sample/tom.mp3';
+
+// Salamander
+import c4 from './sound/sample/salamander/C4.mp3';
+import c5 from './sound/sample/salamander/C5.mp3';
+import c3 from './sound/sample/salamander/C3.mp3';
+import c6 from './sound/sample/salamander/C6.mp3';
+
+
+
+
 import { init } from './viz/sceneInit';
 
 const stats = new Stats();
 document.body.appendChild(stats.domElement);
-const synth =  new Tone.PolySynth(3).toMaster();
+const synth = new Tone.Sampler({
+    "C4" : c4,
+    "C5" : c5,
+    "C6" : c6,
+    "C3" : c3
+},{
+    'release' : 1
+}).toMaster();
 
 const sampler = new Tone.Sampler({
-    "C4" : kick,
-    "C#4" : clap,
-    "D4" : bell,
-    "D#4" : clav,
-    "E4" : closedhit,
-    "F4" : conga,
-    "F#4" : cymbal,
-    "G4" : lowconga,
-    "G#4" : lowtom,
-    "A4" : maracas,
-    "A#4" : rim,
-    "B4" : snare,
-    "C5" : tom,
+    "C3" : kick,
+    "C#3" : clap,
+    "D3" : bell,
+    "D#3" : clav,
+    "E3" : closedhit,
+    "F3" : conga,
+    "F#3" : cymbal,
+    "G3" : lowconga,
+    "G#3" : lowtom,
+    "A3" : maracas,
+    "A#3" : rim,
+    "B3" : snare,
+    "C4" : tom
+},{
+    'release' : 1
 }).toMaster();
 
 
@@ -56,13 +75,17 @@ Tone.Transport.loopStart = "0:0:0";
 Tone.Transport.loopEnd = "8:0:0";
 Tone.Transport.start();
 Tone.Transport.scheduleRepeat(function(time){
-    console.log(Tone.Transport.position);
+    //console.log(Tone.Transport.position);
 }, "16n", "0");
 
 animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats);
 initMidi(synth);
 initKeyboard(synth, sampler);
-initRec();
+initRec(synth);
+
+document.querySelector('#get').addEventListener('click', function(){
+    console.log(Tone.Transport);
+});
 
 
 addEventListener('resize', () => {

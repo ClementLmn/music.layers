@@ -31,6 +31,6 @@ export const noteStop = (note, frequency) => {
     }});
 }
 
-export const getVoices = (scene) => {
+export const getVoices = () => {
     return voices;
 }
