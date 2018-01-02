@@ -208,3 +208,17 @@ body {
   position: absolute;
   top: 0;
   right: 0; }
+
+.loop-control {
+  position: absolute;
+  bottom: 0;
+  right: 0; }
+  .loop-control button {
+    font-weight: 700;
+    border: 0;
+    padding: 10px 15px;
+    color: white;
+    outline: none;
+    background-color: darkgrey; }
+    .loop-control button.active {
+      background-color: red; }
