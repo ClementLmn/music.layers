@@ -5,12 +5,13 @@ import fragment from './shaders/fragment.glsl';
 import {TweenMax} from 'gsap';
 
 class Line{
-    constructor(note, voices, ampl, freq, speed, z = 0){
+    constructor(note, voices, ampl, freq, speed, z = 0, y = 5){
         this.ampl = ampl;
         this.note = note;
         this.freq = freq;
         this.speed = speed;
         this.place = z;
+        this.placeY = y;
         this.dead = false;
         switch(z%3){
             case 0:
@@ -48,7 +49,7 @@ class Line{
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
         this.mesh.rotation.z = 0.2;
-        this.mesh.position.y = 5;
+        this.mesh.position.y = this.placeY;
         this.mesh.position.z -= z*10;
     }
 }

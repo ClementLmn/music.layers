@@ -1,7 +1,7 @@
 import fieldSorter from '../utils/fieldSorter.js';
 import * as CCapture from 'ccapture.js';
 import {getVoices} from '../sound/voices';
-import {getLoops} from '../sound/loop';
+import {getLoops} from '../sound/loops';
 
 export default (scene, camera, renderer, stats, isRecorded = false) => {
     if(isRecorded){
@@ -17,6 +17,11 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
         for (var prop in voices) {
             voices[prop].material.uniforms.count.value++;
         }
+
+        for (var prop in loops) {
+            loops[prop].animate();
+        }
+        
         if(isRecorded){
             capturer.capture( renderer.domElement );
         }

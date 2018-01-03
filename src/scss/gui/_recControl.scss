@@ -1,16 +1,75 @@
 .loop-control{
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
     button {
-        font-weight: 700;
         border: 0;
-        padding: 10px 15px;
+        padding: 16px;
         color: white;
         outline: none;
         background-color: darkgrey;
+        &:hover{
+            background-color: grey;
+        }
         &.active{
             background-color: red;
         }
     }
+    .rec-btn {
+        &:before{
+            content: '';
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+        }
+    }
+    .pause-btn {
+        display: flex;
+        &:before{
+            content: '';
+            display: block;
+            width: 5px;
+            height: 20px;
+            background-color: white;
+            margin: 0 10px 0 0;
+        }
+        &:after{
+            content: '';
+            display: block;
+            width: 5px;
+            height: 20px;
+            background-color: white;
+        }
+        &.paused{
+            &:before{
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 10px 0 10px 17.3px;
+                border-color: transparent transparent transparent white;
+                background-color: transparent;
+                margin: 0;
+            }
+            &:after{
+                content: none;
+            }
+        }
+    }
+
+    .play-btn {
+        &:before{
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 17.3px;
+            border-color: transparent transparent transparent white;
+        }
+    }
+
 }

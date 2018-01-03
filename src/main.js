@@ -8,7 +8,7 @@ import './scss/core.scss';
 import {initMidi} from './sound/midiSound';
 import {initKeyboard} from './sound/keyboard';
 import * as sceneInit from './viz/sceneInit';
-import {initRec} from './sound/loop';
+import {initRec, getLoops} from './sound/loops';
 import animate from './viz/animate';
 
 // Drums
@@ -72,21 +72,18 @@ sceneInit.init();
 Tone.Transport.bpm.value = 120;
 Tone.Transport.loop = true;
 Tone.Transport.loopStart = "0:0:0";
-Tone.Transport.loopEnd = "8:0:0";
+Tone.Transport.loopEnd = "4:0:0";
 Tone.Transport.start();
-Tone.Transport.scheduleRepeat(function(time){
-    //console.log(Tone.Transport.position);
-}, "16n", "0");
 
 animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats);
 initMidi(synth);
 initKeyboard(synth, sampler);
 initRec(synth);
 
-document.querySelector('#get').addEventListener('click', function(){
-    console.log(Tone.Transport);
+document.querySelector('#pause').addEventListener('click', function(){
+    this.classList.toggle('paused');
+    Tone.Transport.toggle();
 });
-
 
 addEventListener('resize', () => {
     sceneInit.resizeHandler();

@@ -1,88 +1,95 @@
 import Tone from 'Tone';
-import metroSample from './sample/metronome.mp3';
-import metroSampleUp from './sample/metronomeUp.mp3';
-import {notePlay, noteStop} from './voices';
-import * as key from './keyboard';
+import Line from '../viz/Line';
+import {scene} from '../viz/sceneInit';
+import { TweenMax } from 'gsap';
 
-export const initRec = synth => {
-    let currentLoopNb = 0;
-    let isRec = false;
-    const recButton = document.querySelector('#rec');
-    const metro = new Tone.Sampler({
-        "C4" : metroSample,
-        "C5" : metroSampleUp
-    }).toMaster();
+class Loop{
+    constructor(id, sound, notes, synth){
+        this.id = id;
+        this.sound = sound;
+        this.notes = notes;
+        this.synth = synth;
 
-    let whichMetro = 1;
+        this.dead = false;
 
-    const metronome = new Tone.Loop(function(time){
-        whichMetro = whichMetro > 4 ? 1 : whichMetro;
-        whichMetro == 1 ? metro.triggerAttack("C5") : metro.triggerAttack("C4");
-        whichMetro++;
-        
-    }, "4n").start(0);
+        this.voices = {};
+        this.lastLine;
 
-    metronome.mute = true;
+        this.notePlay = this.notePlay.bind(this)
+        this.noteStop = this.noteStop.bind(this)
+        this.animate = this.animate.bind(this)
+        this.html = `<span class='loop' id='loop${this.id}'><span class='number'>${this.id}</span><span class='mute'>mute</span><span class='delete'>delete</span></span>`;
 
-    const processData = data => {
-        data.notes.forEach(el => {
-            if(el.timeEnd == undefined) el.timeEnd = "8m";
-            el.deltaTime = el.timeEnd - el.time;
-        });
-        console.log(data)
-        const part = new Tone.Part(function(time, value){
-            data.sound.triggerAttackRelease(value.note, value.deltaTime, time);
-            if(data.sound == synth){
-                notePlay(Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
+        const noteS = this.noteStop;
+        const noteP = this.notePlay;
+
+        function trigger(time, value){
+            this.sound.triggerAttackRelease(value.note, value.deltaTime, time);
+
+            if(this.sound == this.synth){
+
+                noteP(this.id, Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
+
                 setTimeout(() => {
-                    noteStop(Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
+                    noteS(this.id, Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
                 }, Tone.Time(value.deltaTime).toMilliseconds());
+
             }
-        }, data.notes).start(0);
-    }
-
-    const loopRec = () => {
-        isRec = true;
-        recButton.classList.add('active');
-        const thisLoopNb = currentLoopNb++;
-        whichMetro = 1;
-        Tone.Transport.position = "0:0:0";
-        metronome.mute = false;
-
-
-        key.rec();
-        
-        Tone.Transport.on("loop", function(time){
-            if(isRec) loopStopRec();
-        });
-    }
-
-
-
-    const loopStopRec = (note, frequency) => {
-        key.stopRec()
-
-        processData(key.dataRecorded());
-
-        isRec = false;
-        recButton.classList.remove('active');
-        Tone.Transport.position = "0:0:0";
-        metronome.mute = true;
-
-    }
-
-
-    recButton.addEventListener('click', function(){
-        if(!isRec){
-            loopRec();
-        }else{
-            loopStopRec();
         }
-    });
+        
+        function onClickMute(){
+            this.part.mute = !this.part.mute;
+            document.querySelector(`#loop${this.id} .mute`).classList.toggle('active');
+        }
+        function onClickDelete(){
+            this.part.removeAll();
+            document.querySelector(`#loop${this.id}`).remove();
+            this.dead = true;
+        }
+
+        this.part = new Tone.Part(trigger.bind(this), this.notes).start(0);
+        
+        
+        document.querySelector('#loopList').insertAdjacentHTML("afterBegin",this.html);
+
+        document.querySelector(`#loop${this.id} .mute`).addEventListener('click', onClickMute.bind(this));
+        document.querySelector(`#loop${this.id} .delete`).addEventListener('click', onClickDelete.bind(this));
 
 
+    }
+    
+    notePlay(loopNumber, note, frequency) {
+        let thisLine;
+        
+        if(Object.keys(this.voices).length > 0){
+            thisLine = new Line(note, this.voices, 2, (frequency).toFixed(2), 4, this.lastLine.place + 1, loopNumber*20);
+        }else{
+            thisLine = new Line(note, this.voices, 2, (frequency).toFixed(2), 4, 0, loopNumber*20);
+        }
+
+        this.voices[note] = thisLine;
+        this.lastLine = thisLine;
+        scene.add(thisLine.mesh);
+        console.log(this)
+    }
+    
+    noteStop(loopNumber, note, frequency) {
+        // on enleve la note du tableau mais on la garde
+        let noteToKill = this.voices[note];
+        delete this.voices[note];
+    
+        TweenMax.to(noteToKill.mesh.scale, 0.3, {x :0.001, onComplete: function(){
+            scene.remove(noteToKill.mesh);
+            noteToKill = null;
+            // on dégage celle quon a gardé
+        }});
+    }
+
+    animate(){
+        for (var prop in this.voices) {
+            this.voices[prop].material.uniforms.count.value++;
+        }
+    }
 }
 
-export const getLoops = () => {
-
-}
+export default Loop;

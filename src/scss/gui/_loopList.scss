@@ -1,0 +1,41 @@
+.loop-list{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    .loop{
+        display: flex;
+        flex-wrap: wrap;
+        width: 160px;
+    }
+    .number{
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        width: 160px;
+        background-color: darkgrey;
+    }
+    .delete, .mute{
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        height: 30px;
+        width: 80px;
+        &:hover{
+            filter: brightness(120%);
+        }
+    }
+    .delete{
+        background-color: #f13434;
+    }
+    .mute{
+        background-color: #007bff;
+        &.active{
+            background-color: lightgrey;
+        }
+    }
+}
