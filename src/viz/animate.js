@@ -19,7 +19,7 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
         }
 
         for (var prop in loops) {
-            loops[prop].animate();
+            if(!loops[props].dead) loops[prop].animate();
         }
         
         if(isRecorded){

@@ -87,14 +87,5 @@ export const initRec = synth => {
 }
 
 export const getLoops = () => {
-    
-    for (var prop in loopsArray) {
-        //not really working
-        if(loopsArray[prop].dead){
-            
-            delete loops[prop];
-            loopNb--;
-        } 
-    }
     return loopsArray;
 }
