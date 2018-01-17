@@ -2,6 +2,7 @@ import Tone from 'Tone';
 import metroSample from './sample/metronome.mp3';
 import metroSampleUp from './sample/metronomeUp.mp3';
 import * as key from './keyboard';
+import * as midi from './midiSound';
 import Loop from './Loop';
 import Line from '../viz/Line';
 import {scene} from '../viz/sceneInit';
@@ -54,6 +55,7 @@ export const initRec = synth => {
 
 
         key.rec();
+        midi.rec();
         
         Tone.Transport.on("loop", function(time){
             if(isRec) loopStopRec();
@@ -64,8 +66,16 @@ export const initRec = synth => {
 
     const loopStopRec = (note, frequency) => {
         key.stopRec()
+        midi.stopRec()
+        
 
-        processData(key.dataRecorded());
+        if(key.dataRecorded().notes.length > 0){
+            processData(key.dataRecorded());
+        }
+        if(midi.dataRecorded().notes.length > 0){
+            processData(midi.dataRecorded());
+        }
+        
 
         isRec = false;
         recButton.classList.remove('active');

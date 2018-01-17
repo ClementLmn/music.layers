@@ -5,9 +5,11 @@ import {notePlay, noteStop} from './voices';
 
 let tremoloActive;
 let midi, data, midiEnable;
+var record = false;
+let dataRec, sound;
 
 
-export const initMidi = (synth) => {
+export const initMidi = (synth, sampler) => {
     WebMidi.enable((err) => {
         if (!err){
             midiEnable = true
@@ -28,27 +30,71 @@ export const initMidi = (synth) => {
                 }
             })
             inputDevice.addListener('noteon', 'all', (event) => {
+                const whichSynth = document.querySelector('input[name="sound"]:checked').value;
                 const fullNote = event.note.name + event.note.octave;
                 const note = event.note.number;
-                synth.triggerAttack(fullNote);
                 const frequency = Tone.Frequency().midiToFrequency(note);
-                notePlay(note, frequency);
+
+                if(whichSynth == 'synth'){
+                    sound = synth;
+                    synth.triggerAttack(frequency);
+                    notePlay(note, frequency);
+                }else{
+                    sound = sampler;
+                    sampler.triggerAttack(frequency);
+                }
+
+                if(record){
+                    const data = {
+                        'note': Tone.Frequency(note, "midi").toNote(),
+                        'time': Tone.Time(Tone.Transport.position).toSeconds()
+                    }
+                    dataRec.push(data);
+                    console.log(data);
+                }
     
             })
             inputDevice.addListener('noteoff', 'all',  (event) => {
+                const whichSynth = document.querySelector('input[name="sound"]:checked').value;
                 const fullNote = event.note.name + event.note.octave;
                 const note = event.note.number;
-                synth.triggerRelease(fullNote);
                 const frequency = Tone.Frequency().midiToFrequency(note);
-                noteStop(note, frequency);
+
+                if(whichSynth == 'synth'){
+                    synth.triggerRelease(frequency);
+                    noteStop(note, frequency);
+                }else{
+                    sampler.triggerRelease(frequency);
+                }
+
+                if(record){
+                    dataRec.forEach(function(el) {
+                        if(el.note == Tone.Frequency(note, "midi").toNote() && el.timeEnd == undefined) el.timeEnd = Tone.Time(Tone.Transport.position).toSeconds();
+                    });
+                }
             })
         }
     }
-
-
-
-
 }
+
+
+export const rec = () => {
+    dataRec = [];
+    record = true;
+}
+
+export const dataRecorded = () => {
+    return {
+        notes : dataRec,
+        sound : sound
+    };
+}
+
+export const stopRec = () => {
+    record = false;
+}
+
+
 
 
 

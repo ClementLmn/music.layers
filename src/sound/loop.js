@@ -70,7 +70,6 @@ class Loop{
         this.voices[note] = thisLine;
         this.lastLine = thisLine;
         scene.add(thisLine.mesh);
-        console.log(this)
     }
     
     noteStop(loopNumber, note, frequency) {

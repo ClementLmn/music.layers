@@ -35,6 +35,8 @@ export const initKeyboard = (synth, sampler) => {
                 'time': Tone.Time(Tone.Transport.position).toSeconds()
             }
             dataRec.push(data);
+            console.log(data);
+
         }
     });
     
@@ -42,6 +44,7 @@ export const initKeyboard = (synth, sampler) => {
         const whichSynth = document.querySelector('input[name="sound"]:checked').value;
         const note = data.note;
         const frequency = Tone.Frequency().midiToFrequency(note);
+
         if(whichSynth == 'synth'){
             synth.triggerRelease(frequency);
             noteStop(note, frequency);

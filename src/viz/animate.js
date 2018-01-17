@@ -17,9 +17,8 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
         for (var prop in voices) {
             voices[prop].material.uniforms.count.value++;
         }
-
         for (var prop in loops) {
-            if(!loops[props].dead) loops[prop].animate();
+            if(!loops[prop].dead) loops[prop].animate();
         }
         
         if(isRecorded){

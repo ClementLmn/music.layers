@@ -76,7 +76,7 @@ Tone.Transport.loopEnd = "4:0:0";
 Tone.Transport.start();
 
 animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats);
-initMidi(synth);
+initMidi(synth, sampler);
 initKeyboard(synth, sampler);
 initRec(synth);
 
