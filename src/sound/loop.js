@@ -4,8 +4,9 @@ import {scene} from '../viz/sceneInit';
 import { TweenMax } from 'gsap';
 
 class Loop{
-    constructor(id, sound, notes, synth){
+    constructor(id, sLoop, sound, notes, synth){
         this.id = id;
+        this.sLoop = sLoop;
         this.sound = sound;
         this.notes = notes;
         this.synth = synth;
@@ -28,7 +29,7 @@ class Loop{
 
             if(this.sound == this.synth){
 
-                noteP(this.id, Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
+                noteP(this.sLoop, Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());
 
                 setTimeout(() => {
                     noteS(this.id, Tone.Frequency(value.note).toMidi(), Tone.Frequency(value.note).toFrequency());

@@ -12,7 +12,6 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
     const loops = getLoops();
     let count = 0;
     const animate = timestamp => {
-        stats.begin();
         renderer.render(scene, camera);
         for (var prop in voices) {
             voices[prop].material.uniforms.count.value++;
@@ -24,7 +23,6 @@ export default (scene, camera, renderer, stats, isRecorded = false) => {
         if(isRecorded){
             capturer.capture( renderer.domElement );
         }
-        stats.end();
         requestAnimationFrame(animate);
     }
     animate();    

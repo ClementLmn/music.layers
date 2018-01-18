@@ -37,8 +37,6 @@ import c6 from './sound/sample/salamander/C6.mp3';
 
 import { init } from './viz/sceneInit';
 
-const stats = new Stats();
-document.body.appendChild(stats.domElement);
 const synth = new Tone.Sampler({
     "C4" : c4,
     "C5" : c5,
@@ -75,7 +73,7 @@ Tone.Transport.loopStart = "0:0:0";
 Tone.Transport.loopEnd = "4:0:0";
 Tone.Transport.start();
 
-animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer, stats);
+animate(sceneInit.scene, sceneInit.camera, sceneInit.renderer);
 initMidi(synth, sampler);
 initKeyboard(synth, sampler);
 initRec(synth);

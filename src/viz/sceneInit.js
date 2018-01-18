@@ -14,7 +14,7 @@ export const init = () => {
     document.body.appendChild( renderer.domElement );
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0x1A1A1A );
+    scene.background = new THREE.Color( 0xffffff );
 
     
     const nearPlane = 1;
@@ -46,7 +46,7 @@ export const init = () => {
 
     // LE SOOOOL
     const matFloor = new THREE.MeshPhongMaterial({
-        color: 0x1A1A1A, 
+        color: 0x1c1c1c, 
         flatShading : true, 
         side: THREE.DoubleSide
     });

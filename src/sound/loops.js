@@ -11,6 +11,7 @@ import { TweenMax } from 'gsap';
 const loopsArray = {};
 let lastLines = {};
 let loopNb = 0;
+let loopSNb= 0;
 
 export const initRec = synth => {
     
@@ -34,15 +35,15 @@ export const initRec = synth => {
 
     metronome.mute = true;
 
-    const processData = data => {
+    const processData = (data) => {
         data.notes.forEach(el => {
             if(el.timeEnd == undefined) el.timeEnd = "4m";
             el.deltaTime = el.timeEnd - el.time;
         });
         
-
+        if(data.sound == synth) loopSNb++;
         loopNb++;
-        loopsArray[loopNb] = new Loop(loopNb, data.sound, data.notes, synth);
+        loopsArray[loopNb] = new Loop(loopNb, loopSNb, data.sound, data.notes, synth);
     }
 
     const loopRec = () => {

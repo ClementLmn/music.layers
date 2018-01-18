@@ -50,7 +50,7 @@ module.exports = {
     },
     plugins,
     devServer : {
-        host: '0.0.0.0',
+        host: 'blankpage',
         port: 9000,
         open: true
     }
